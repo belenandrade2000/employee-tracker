@@ -114,6 +114,7 @@ function addDepartment () {
 };
 
 function addRole() {
+
   inquirer
   .prompt([
     {
@@ -130,15 +131,14 @@ function addRole() {
     type: 'list',
     name: 'newRoleDepartment',
     message: 'What department is the new role in?',
-    choices: [
-
-      {value: "Sales"},
-      {value: "Engineering"},
-      {value: "Finance"},
-      {value: "Legal"},
-      
-
-    ]
-   },
-  ])
+    choices: departments.name
+  
+   },])
+   .then((answer) => {
+    let sql =`INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?)`;
+    db.query(sql, answer.newTitle,answer.newSalary, answer.newRoleDepartment, (error, response) => {
+      if (error) throw error;
+      viewAllRoles ();
+              });
+    });
 }
